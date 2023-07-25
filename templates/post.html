@@ -1,31 +1,70 @@
-{% extends 'base.html' %}
-
-{% block content %}
-    <h2>{% block title %} {{ post['title'] }} {% endblock %}</h2>
-    <span class="badge badge-primary">{{ post['created'] }}</span>
-    <p>{{ post['content'] }}</p>
-    <form method="post">
-        <div class="form-group">
-            <label for="title">Name</label>
-            <input type="text" name="name"
-                   placeholder="Post title" class="form-control"
-                   value="{{ request.form['name'] }}"></input>
-        </div>
+{% extends 'layout.html'%} {%block head%}
+<title>{{title}}</title>
+<link
+  rel="stylesheet"
+  href="{{ url_for('static', filename='css/post.css') }}"
+/>
+{% endblock head %} {%block body%}
+<div class="post centeredHorizontally">
+  <h1 class="title">{{title}}</h1>
+  <p class="content">
+    {{content|safe}} <br />
+    Tags: {{tags.replace(",",", ")}}
+  </p>
+  <div class="bottomBar">
+    <div>
+      <h5>👁️ {{views}}</h5>
+      <a href="/user/{{author|lower}}">
+        <h5 class="author">
+          OrnekKullanici
+         </h5></a>
+    </div>
+    <div class="dateTime">
+      <h5>{{time}}</h5>
+      <h5 class="date">{{date}}</h5>
+    </div>
+  </div>
+  {% if author == session["userName"] %}
+  <div class="bottomBar">
+    <a href="/deletepost/{{id}}/redirect=&" class="btn btnLink textPrimary"
+      >delete</a
+    >
+    <a href="/editpost/{{id}}" class="btn btnLink textPrimary">edit</a>
+  </div>
+  {% endif %} 
+  {% if comments %}
+    {% for comment in comments %}
+      <div class="comments">
+        <p>image</p>
+        <section class="commentUserNameContainer">
+          <a href="/user/{{comment[3]|lower}}" class="commentUserName"
+            >{{comment[3]}} :</a
+          >
+        </section>
+        <p class="centeredHorizontally">{{comment[2]}}</p>
+        {% if session["userName"] == comment[3] %}
+        <a href="/deletecomment/{{comment[0]}}/redirect=post&{{id}}">🗑️</a>
+        {% endif %}
     
-         <div class="form-group">
-            <label for="content">Content</label>
-            <textarea name="content" placeholder="Post content"
-                      class="form-control">{{ request.form['content'] }}</textarea>
-        </div>
-        <div class="form-group">
-            <button type="submit" class="btn btn-primary">Submit</button>
-        </div>
-       <h1> Comments</h1>
-    {% for post in posts %}
-        <a href="{{ url_for('post', post_id=post['id']) }}">
-            <h2>{{ post['title'] }}</h2>
-        </a>
-        <span class="badge badge-primary">{{ post['created'] }}</span>
-        <hr>
-    {% endfor %}
-{% endblock %}
+    </div>
+    <form method="post" class="commentForm">
+      {% if session["userName"] %} {{form.comment(class_="comment")}}
+      <button type="submit" class="btnSubmit">comment</button>
+    {% else %}
+    <style>
+      .commentForm {
+        border: none;
+      }
+    </style>
+    <small
+      >you need
+      <a href="/login/redirect=&post&{{id}}" class="linkLogin">login</a> for
+      comment</small
+    >
+  </form>
+  {% endif %}
+  {% endfor %}
+  {% endif %} 
+    
+</div>
+{% endblock body %}

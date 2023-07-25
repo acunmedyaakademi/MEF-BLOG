@@ -2,6 +2,9 @@ import sqlite3
 from flask import Flask, render_template, request, url_for, flash, redirect
 from werkzeug.exceptions import abort
 from crud import get_data_from_db,get_index_data
+from helpers import commentForm,getProfilePicture
+from flaskwebgui import FlaskUI
+from app import app
 
 
 def get_post(post_id):
@@ -14,17 +17,36 @@ application = Flask(__name__)
 application.config['SECRET_KEY'] = 'secretsecretsecretkey'
 
 
-@application.route('/')
+"""@application.route('/')
 def index():
     posts = get_index_data()
     print("POSTS ",posts)
     return render_template('basic_blog.html', posts=posts)
+"""
+@application.route('/')
+def index():
+    posts = get_index_data()
+    print("POSTS ",posts)
+    return render_template('index.html', posts=posts)
 
 
 @application.route('/<int:post_id>')
 def post(post_id):
     post = get_post(post_id)
-    return render_template('post.html', post=post,posts = get_index_data())
+    form = commentForm(request.form)
+    comments = get_data_from_db(query='select * from comments where post = ?',params=(post_id,))
+    return render_template('post.html', post=post,posts = get_index_data(),
+                            id=post[0],
+                title=post[1],
+                tags=post[2],
+                content=post[3],
+                author=post[4],
+                views=post[7],
+                date=post[5],
+                time=post[6],
+                form=form,
+                comments=comments,
+                )
 
 
 #Important Create Post Function --------------------------------
@@ -73,4 +95,4 @@ def delete(id):
     return redirect(url_for('index'))
 
 if __name__ == "__main__":
-    application.run()
+    FlaskUI(app=app, server="flask").run()

@@ -1,0 +1,10 @@
+  <a href="/user/{{author|lower}}">
+        <h5 class="author">
+          OrnekKullanici
+         <!-- <img
+            class="profilePicture"
+            src="{{ getProfilePicture(author) }}"
+          />{{author}} -->
+        </h5></a>
+
+<img class="profilePicture" src="{{ getProfilePicture(comment[3]) }}" />

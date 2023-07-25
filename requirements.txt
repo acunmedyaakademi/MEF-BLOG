@@ -6,7 +6,6 @@ appdirs==1.4.4
 argon2-cffi==21.3.0
 argon2-cffi-bindings==21.2.0
 arrow==1.2.3
-astroid==2.10.3
 astropy==5.1.1
 asttokens==2.0.6
 async-timeout==4.0.2
@@ -39,15 +38,6 @@ clyent==1.2.4
 colorama==0.4.4
 colorcet==2.0.6
 comm==0.3.0
-conda==4.11.0
-conda-build==3.23.0
-conda-content-trust==0.1.1
-conda-pack==0.7.3
-conda-package-handling==1.7.3
-conda-repo-cli==1.0.5
-conda-token==0.1.0
-conda-verify==3.11.0
-conda_package_streaming==0.4.1
 constantly==15.1.0
 contourpy==0.8.0
 cookiecutter==1.7.3

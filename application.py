@@ -30,8 +30,9 @@ def index():
     return render_template('index.html', posts=posts)
 
 
-@application.route('/<int:post_id>')
+@application.route('/<post_id>')
 def post(post_id):
+    print("WOOOORKING")
     post = get_post(post_id)
     form = commentForm(request.form)
     comments = get_data_from_db(query='select * from comments where post = ?',params=(post_id,))
@@ -95,4 +96,4 @@ def delete(id):
     return redirect(url_for('index'))
 
 if __name__ == "__main__":
-    FlaskUI(app=app, server="flask").run()
+    app.run()

@@ -16,7 +16,7 @@ from helpers import (
 postBlueprint = Blueprint("post", __name__)
 
 
-@postBlueprint.route("/post/<int:postID>", methods=["GET", "POST"])
+@postBlueprint.route("/<int:postID>", methods=["GET", "POST"])
 def post(postID):
     form = commentForm(request.form)
     connection = sqlite3.connect("db/posts.db")

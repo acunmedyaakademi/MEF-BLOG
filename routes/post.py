@@ -50,7 +50,7 @@ def post(postID):
                 connection.commit()
                 addPoints(5, session["userName"])
                 flash("You earned 5 points by commenting ", "success")
-                return redirect(f"/post/{postID}")
+                return redirect(f"/{postID}")
             connection = sqlite3.connect("db/comments.db")
             cursor = connection.cursor()
             cursor.execute(f'select * from comments where post = "{postID}"')

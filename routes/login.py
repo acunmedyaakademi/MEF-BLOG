@@ -43,6 +43,13 @@ def login(direct):
                         addPoints(1, session["userName"])
                         message("2", f'USER: "{user[1]}" LOGGED IN')
                         flash(f"Welcome {user[1]}", "success")
+                        cursor.execute(f'select role from users where userName = "{session["userName"]}"')
+                        role = cursor.fetchone()[0]
+                        match role == "admin":
+                            case True:
+                                return redirect("/admin")
+                            case False:
+                                return redirect("/")
                         return redirect(direct)
                     else:
                         message("1", "WRONG PASSWORD")
